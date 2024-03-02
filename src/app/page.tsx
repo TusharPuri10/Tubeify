@@ -1,36 +1,34 @@
 'use client';
-import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import TorusExplosion from "@/components/TorusModel";
-import { YoutubeTranscript } from 'youtube-transcript';
 import axios from "axios";
-
-async function query(data: { inputs: string; }) {
-	const response = await fetch(
-		"https://api-inference.huggingface.co/models/tusharpuri10/Flan_t5_podcast_summary_assessment",
-		{
-			headers: { Authorization: "Bearer " + process.env.model_inference_api_key },
-			method: "POST",
-			body: JSON.stringify(data),
-		}
-	);
-	const result = await response.json();
-	return result;
-}
-
-query({"inputs": "The answer to the universe is"}).then((response) => {
-	console.log(JSON.stringify(response));
-});
+import YoutubeVideo from "@/components/YoutubeVideo";
+import SummaryScrollArea from "@/components/SummaryScrollArea";
 
 
 export default function Home() {
 
   const [url, setUrl] = useState("");
+  const [overlay, setOverlay] = useState(false);
+  const [generate, setGenerating] = useState(false);
+  const [summaries, setSummaries] = useState<string[]>([]);
 
   const fetchTranscript = () => {
     axios.get(`/api/transcript?url=${url}`).then((response) => {
-      console.log(response.data);
+      let transcript: string = "";
+      let summaries : string[] = [];
+      for(let i=0;i<response.data.length;i++){
+        transcript+=response.data[i].text;
+        transcript+=" ";
+        if(i!=0 && (i%10==0 || i==response.data.length))
+        {
+          summaries.push(transcript);
+          setSummaries(summaries);
+          transcript=""
+        }
+      }
+      setOverlay(true);
     }); 
   };
 
@@ -51,22 +49,26 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-black">
       <header className="flex w-full justify-between p-4">
-        <h1 className="text-4xl font-bold mt-4 ml-4">Tubeify</h1>
+        <h1 className="text-4xl font-bold mt-4 ml-4 text-white">Tubeify</h1>
         <img src="study.gif" alt="" className="w-16 h-16"/>
       </header>
-      <TorusExplosion />
+      <TorusExplosion rotation={generate}/>
       <motion.div
-        className="flex flex-col items-center justify-between w-full p-4 z-100 absolute top-48"
+        className="flex flex-col items-center justify-between w-full p-4 z-100 absolute top-40"
         variants={container}
         initial="hidden"
         animate="show"
       >
-        <motion.div className="text-center" variants={item}>
-          <h2 className="text-5xl font-bold mb-4 bg-opacity-40 bg-black">
+        {/* Input and Landing Page */}
+        {!overlay && <motion.div className="text-center" variants={item}>
+          <h2 className="text-5xl font-bold mb-4 bg-opacity-40 text-white">
             Summarize your YouTube videos
           </h2>
+          <p className="text-xl font-semibold mb-4 bg-opacity-40 text-white">
+            Break long videos into summarized chunks to accelerate your study.
+          </p>
           <div className="flex justify-center">
             <input
               type="text"
@@ -76,21 +78,39 @@ export default function Home() {
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
-                  YoutubeTranscript.fetchTranscript(url).then(console.log);
+                  setGenerating(true);
+                  fetchTranscript();
                 }
               }}
             />
             <button className="bg-blue-500 text-white p-2 rounded-lg ml-4"
-            onClick={fetchTranscript}>
-              Generate
+            onClick={()=>{
+              setGenerating(true);
+              fetchTranscript();
+            }}>
+              {!generate ? "Generate" : "Generating..."}
             </button>
           </div>
-        </motion.div>
+        </motion.div>}
+        {/* Overlay Elements */}
+        {/* {overlay && <YoutubeVideo urlId={url.split("=")[1]}/>} */}
+        {overlay && <div className="h-fit w-full bg-opacity-10 rounded-lg flex md:flex-row flex-col justify-around">
+            {/* youtube video */}
+            <div className="text-white">
+              <YoutubeVideo urlId={url.split("=")[1].split("&")[0]}/>
+            </div>
+            {/* summaries */}
+            <div className="bg-gradient-to-r from-red-700 via-purple-500 to-blue-700 p-1 rounded-lg w-fit">
+              <SummaryScrollArea summaries={summaries}/>
+            </div>
+        </div>}
       </motion.div>
-      <footer className="flex w-full justify-between p-4">
-        <p className="text-sm">&copy; 2022 Tubeify. All rights reserved.</p>
-        <p className="text-sm">
-          <a href="https://github.com/tubeify/tubeify" target="_blank" rel="noopener noreferrer">
+      {/* Footer */}
+      <footer className="flex w-full justify-between p-4 bg-black">
+        <p className="text-sm text-white">&copy; 2024 Tubeify</p>
+        <p className="text-white">Made with ❤️ by Tushar Puri</p>
+        <p className="text-sm text-white">
+          <a href="https://github.com/TusharPuri10/Tubeify" target="_blank" rel="noopener noreferrer" className="mr-12">
             GitHub
           </a>
         </p>
