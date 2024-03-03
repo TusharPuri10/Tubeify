@@ -1,3 +1,4 @@
+## About the project
 Tubeify is a web application built with the latest version of Next.js, Tailwind CSS, and Shadcn UI. Its primary objective is to summarize YouTube videos, helping students like Mayank (one of the team members) save time and learn more effectively.
 
 The current version of Tubeify is in beta, utilizing the OpenAI API for its functionality. The original version uses a custom finetuned LLM for this particular usecase only. Here's the [github link](https://github.com/TusharPuri10/Tubeify-Django-Version). 
