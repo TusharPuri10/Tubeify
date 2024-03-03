@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { toast } from "sonner"
 
 
 
@@ -30,6 +31,13 @@ export default function Home() {
       if (!overlay) setOverlay(true);
       return res.data.summary;
     } catch (err) {
+      toast("Something went wrong", {
+        description: "Oops! It seems like open ai API Key is expired now.",
+        action: {
+          label: "refresh page",
+          onClick: () => (window.location.reload()),
+        },
+      })
       console.error(err);
       return ""; // Return empty string if there's an error
     }
@@ -38,7 +46,18 @@ export default function Home() {
   const fetchTranscript = async () => {
     try {
       const response = await axios.get(`/api/transcript?url=${url}`);
-      console.log(response.data);
+      console.log(response.data.error);
+      if(response.data.error && response.data.error == "Something went wrong")
+      {
+        toast("Something went wrong", {
+          description: "Oops! It seems like the transcript for this video doesn't exist.",
+          action: {
+            label: "refresh page",
+            onClick: () => (window.location.reload()),
+          },
+        })
+        return;
+      }
       let startTime = 0;
       let endTime = 0;
       let transcript = "";
@@ -57,6 +76,13 @@ export default function Home() {
         }
       }
     } catch (error) {
+      toast("Something went wrong", {
+        description: "Oops! It seems like the transcript for this video doesn't exist.",
+        action: {
+          label: "refresh page",
+          onClick: () => (window.location.reload()),
+        },
+      })
       console.error(error);
     }
   };
