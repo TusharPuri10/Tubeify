@@ -24,13 +24,24 @@ export default function Home() {
   const [summaries, setSummaries] = useState<{ timestamp: string, text: string }[]>([]);
   const [chunks, setChunks] = useState<number>(5);
 
-  const fetchTranscript = () => {
-    axios.get(`/api/transcript?url=${url}`).then((response) => {
+  const fetchSummary = async (text: string) => {
+    try {
+      const res = await axios.post("/api/summary/", { transcript: text });
+      if (!overlay) setOverlay(true);
+      return res.data.summary;
+    } catch (err) {
+      console.error(err);
+      return ""; // Return empty string if there's an error
+    }
+  };
+
+  const fetchTranscript = async () => {
+    try {
+      const response = await axios.get(`/api/transcript?url=${url}`);
       console.log(response.data);
       let startTime = 0;
       let endTime = 0;
       let transcript = "";
-      const summaries = [];
 
       for (let i = 0; i < response.data.length; i++) {
         transcript += response.data[i].text + " ";
@@ -39,15 +50,15 @@ export default function Home() {
         if (endTime - startTime >= chunks * 60 * 1000 || i === response.data.length - 1) {
           // If duration exceeds 15 minutes or it's the last segment
           const timestamp = formatTimestamp(startTime) + " - " + formatTimestamp(endTime);
-          summaries.push({ timestamp, text: transcript.trim() });
+          const summary = await fetchSummary(transcript.trim());
+          setSummaries(prevSummaries => [...prevSummaries, { timestamp, text: summary }]); // Update state correctly
           transcript = "";
-          startTime = endTime; // Update startTime for next group
+          startTime = endTime; // Update startTime for next group;
         }
       }
-
-      setSummaries(summaries);
-      setOverlay(true);
-    });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
 
@@ -80,7 +91,10 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-between bg-black">
       <header className="flex w-full justify-between p-4 cursor-pointer">
-        <h1 className="text-4xl font-bold mt-4 ml-4 text-white" onClick={()=>(window.location.reload())}>Tubeify</h1>
+        <div className="flex flex-row">
+          <h1 className="text-4xl font-bold mt-4 ml-4 text-white" onClick={() => (window.location.reload())}>Tubeify</h1>
+           <p className="text-white">beta</p>
+        </div>
         <img src="study.gif" alt="" className="w-16 h-16" />
       </header>
       <TorusExplosion rotation={generate} />
@@ -113,7 +127,7 @@ export default function Home() {
               }}
             />
             <div className="opacity-85 bg-black">
-              <Select onValueChange={(e)=>{
+              <Select onValueChange={(e) => {
                 var min: number = +e;
                 setChunks(min);
               }}>
