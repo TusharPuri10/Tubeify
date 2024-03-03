@@ -1,4 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Tubeify is a web application built with the latest version of Next.js, Tailwind CSS, and Shadcn UI. Its primary objective is to summarize YouTube videos, helping students like Mayank (one of the team members) save time and learn more effectively.
+
+The current version of Tubeify is in beta, utilizing the OpenAI API for its functionality. The original version uses a custom finetuned LLM for this particular usecase only. Here's the [github link](https://github.com/TusharPuri10/Tubeify-Django-Version). 
+
+Users can input YouTube video URLs, and Tubeify will provide concise summaries, allowing them to grasp the essential content of the videos efficiently.
+
+## Features
+* Summarize YouTube videos
+* Beta version utilizing OpenAI API
+* Built with Next.js, Tailwind CSS, and Shadcn UI
 
 ## Getting Started
 

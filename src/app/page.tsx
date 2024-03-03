@@ -38,6 +38,7 @@ export default function Home() {
           onClick: () => (window.location.reload()),
         },
       })
+      setTimeout(() => (window.location.reload()),5000)
       console.error(err);
       return ""; // Return empty string if there's an error
     }
@@ -56,6 +57,7 @@ export default function Home() {
             onClick: () => (window.location.reload()),
           },
         })
+        setTimeout(() => (window.location.reload()),5000)
         return;
       }
       let startTime = 0;
@@ -83,6 +85,7 @@ export default function Home() {
           onClick: () => (window.location.reload()),
         },
       })
+      setTimeout(() => (window.location.reload()),5000)
       console.error(error);
     }
   };
