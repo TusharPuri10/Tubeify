@@ -21,19 +21,18 @@ function Torus({rotation}: {rotation: boolean}) {
     (animation: { name: string; }) => animation.name === "MorphBake"
   );
 
-  if (morphBakeAnimation) {
-    // Create a mixer to play the animation
-    const mixer = new THREE.AnimationMixer(gltf.scene);
-    const action = mixer.clipAction(morphBakeAnimation);
+  // Create a mixer to play the animation
+  const mixer = new THREE.AnimationMixer(gltf.scene);
+  const action = mixer.clipAction(morphBakeAnimation);
 
-    // Play the animation
-    action.play();
+  // Play the animation
+  action.play();
 
-    // Update the animation mixer in each frame
-    useFrame((state, delta) => {
-      mixer.update(delta);
-    });
-  }
+  // Update the animation mixer in each frame
+  useFrame((state, delta) => {
+    mixer.update(delta);
+  });
+
   return (
     <mesh ref={ref}>
       <primitive object={gltf.scene} />
