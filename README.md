@@ -11,6 +11,11 @@ Users can input YouTube video URLs, and Tubeify will provide concise summaries, 
 
 ## Getting Started
 
+First, install the dependencies:
+```bash
+npm install
+```
+
 First, run the development server:
 
 ```bash
