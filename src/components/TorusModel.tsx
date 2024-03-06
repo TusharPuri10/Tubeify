@@ -43,6 +43,7 @@ function Torus({rotation}: {rotation: boolean}) {
 export default function TorusExplosion({rotation} : {rotation: boolean}) {
   return (
     <Canvas
+      className="hidden lg:block"
       style={{ height: "30rem", backgroundColor: "#000000" }} // Set background color to black
       camera={{ position: [0, -0.2, 4.2] }}
     >

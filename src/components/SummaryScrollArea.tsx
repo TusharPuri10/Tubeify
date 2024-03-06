@@ -22,10 +22,10 @@ const SummaryScrollArea = ({ summaries }: Props) => {
 
     return (
         <div>
-            <ScrollArea className="h-72 rounded-lg p-4 bg-black text-sm">
+            <ScrollArea className="h-72 rounded-lg p-4 bg-black text-sm ">
                 {summaries.map((summary, index) => (
                     (index === currentIndex ?
-                        <Card className="w-[400px] my-6" key={index}>
+                        <Card className="md:w-[400px]  my-6" key={index}>
                             <CardTitle className="mt-4 ml-4">Summary: {summary.timestamp}</CardTitle>
                             <CardContent className="p-6">
                                 <Typewriter key={key} text={summary.text} speed={2} onFinished={() =>{
@@ -35,7 +35,7 @@ const SummaryScrollArea = ({ summaries }: Props) => {
                             </CardContent>
                         </Card>
                         : (index < currentIndex &&
-                            <Card className="w-[400px] my-6" key={index}>
+                            <Card className="w-[300px] md:w-[500px] my-6" key={index}>
                                 <CardTitle className="mt-4 ml-4">Summary: {summary.timestamp}</CardTitle>
                                 <CardContent className="p-6">
                                     {summary.text}
