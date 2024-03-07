@@ -138,9 +138,10 @@ export default function Home() {
 				</div>
 				<img src="study.gif" alt="" className="w-16 h-16" />
 			</header>
-			<div className="">
-				<TorusExplosion rotation={generate} />
-
+			<div>
+				<div className={` ${overlay ? "hidden lg:block" : ""}`}>
+					<TorusExplosion rotation={generate} />
+				</div>
 				<motion.div
 					className={' flex flex-col items-center justify-between w-full '}
 					variants={container}
