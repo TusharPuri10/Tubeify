@@ -126,6 +126,15 @@ export default function Home() {
 		show: { opacity: 1 },
 	};
 
+	function getVideoId(url: string) {
+		if (url.includes('youtu.be')) {
+		  return url.split('youtu.be/')[1].split('?')[0];
+		} else if (url.includes('watch?v=')) {
+		  return url.split('watch?v=')[1].split('&')[0];
+		}
+		return null;
+	  }
+
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-between bg-black relative">
 			<header className="flex w-full justify-between p-4 cursor-pointer">
@@ -210,7 +219,7 @@ export default function Home() {
 						<div className="w-full px-4 bg-opacity-10 rounded-lg flex lg:flex-row flex-col md:justify-around items-center gap-y-7 md:absolute md:top-40  ">
 							{/* youtube video */}
 							<div className="text-white ">
-								<YoutubeVideo urlId={url.split('=')[1].split('&')[0]} />
+								<YoutubeVideo urlId={getVideoId(url)!} />
 							</div>
 							{/* summaries */}
 							<div className="bg-gradient-to-r from-red-700 via-purple-500 to-blue-700 p-1 rounded-lg w-fit ">
