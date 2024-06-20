@@ -66,9 +66,10 @@ export default function Home() {
 			let endTime = 0;
 			let transcript = '';
 
-			for (let i = 0; i < response.data.length; i++) {
-				transcript += response.data[i].text + ' ';
-				endTime = response.data[i].offset + response.data[i].duration;
+			let i = 0;
+			for (const data of response.data) {
+				transcript += data.text + ' ';
+				endTime = data.offset + data.duration;
 
 				if (
 					endTime - startTime >= chunks * 60 * 1000 ||
@@ -85,6 +86,7 @@ export default function Home() {
 					transcript = '';
 					startTime = endTime; // Update startTime for next group;
 				}
+				i++;
 			}
 		} catch (error) {
 			toast('Something went wrong', {
