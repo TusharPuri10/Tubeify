@@ -240,7 +240,7 @@ export default function Home() {
 					&copy; 2024 Tubeify
 				</p>
 				<p className="sm:w-fit w-full text-white">
-					Made with ❤️ by Tushar Puri
+					Made with ❤️ by Tushar, Vishwas, Mayank
 				</p>
 				<p className="sm:w-fit w-full text-sm text-white">
 					<a
