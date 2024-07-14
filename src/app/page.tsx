@@ -26,7 +26,11 @@ export default function Home() {
 
 	const fetchSummary = async (text: string) => {
 		try {
-			const res = await axios.post('/api/summary/', { transcript: text });
+			const tokens = text.split(" ");
+			console.log(tokens.length);
+			console.log(tokens.slice(0, 2000).length);
+			const updatedText = tokens.slice(0, 2000).join(" ");
+			const res = await axios.post('/api/summary/', { transcript: updatedText });
 			if (!overlay) setOverlay(true);
 			return res.data.summary;
 		} catch (err) {
@@ -46,7 +50,6 @@ export default function Home() {
 	const fetchTranscript = async () => {
 		try {
 			const response = await axios.get(`/api/transcript?url=${url}`);
-			console.log(response.data.error);
 			if (
 				response.data.error &&
 				response.data.error == 'Something went wrong'
@@ -67,14 +70,17 @@ export default function Home() {
 			let transcript = '';
 
 			let i = 0;
+			console.log(response.data);
 			for (const data of response.data) {
 				transcript += data.text + ' ';
 				endTime = data.offset + data.duration;
 
 				if (
-					endTime - startTime >= chunks * 60 * 1000 ||
+					endTime - startTime >= chunks * 60 ||
 					i === response.data.length - 1
 				) {
+					console.log(endTime - startTime);
+					console.log(i, "yooooooo");
 					// If duration exceeds 15 minutes or it's the last segment
 					const timestamp =
 						formatTimestamp(startTime) + ' - ' + formatTimestamp(endTime);
@@ -103,11 +109,10 @@ export default function Home() {
 	};
 
 	// Helper function to format milliseconds to timestamp (hh:mm:ss)
-	const formatTimestamp = (milliseconds: number): string => {
-		const totalSeconds = Math.floor(milliseconds / 1000);
+	const formatTimestamp = (totalSeconds: number): string => {
 		const hours = Math.floor(totalSeconds / 3600);
 		const minutes = Math.floor((totalSeconds % 3600) / 60);
-		const seconds = totalSeconds % 60;
+		const seconds = Math.trunc(totalSeconds % 60);
 		return `${hours}:${minutes}:${seconds}`;
 	};
 
