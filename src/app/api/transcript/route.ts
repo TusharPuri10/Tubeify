@@ -8,8 +8,8 @@ export async function GET(req: Request) {
       const transcript = await YoutubeTranscript.fetchTranscript(url);
       return Response.json(transcript);
   }
-  catch (error) {
-      console.log(error);
-      return Response.json({ error: 'Something went wrong' });
+  catch (error: any) {
+    console.error('Error fetching transcript:', error);
+    return Response.json({ error: error.message || 'Something went wrong' });
   }
 }
