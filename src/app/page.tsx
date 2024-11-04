@@ -51,12 +51,10 @@ export default function Home() {
 		try {
 			const response = await axios.get(`/api/transcript?url=${url}`);
 			if (
-				response.data.error &&
-				response.data.error == 'Something went wrong'
-			) {
+				response.data.error) {
 				toast('Something went wrong', {
 					description:
-						"Oops! It seems like the transcript for this video doesn't exist.",
+					response.data.error,
 					action: {
 						label: 'refresh page',
 						onClick: () => window.location.reload(),
