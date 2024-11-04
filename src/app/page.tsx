@@ -250,6 +250,12 @@ export default function Home() {
 						GitHub
 					</a>
 				</p>
+				<p className="sm:w-fit w-full text-sm text-red-500">
+					⚠️ Update 5/11/2024: This project is deprecated due to YouTube banning ISP IPs. 
+					As a result, the functionality of this application to fetch and summarize YouTube videos 
+					is no longer viable. Users are encouraged to explore alternative solutions or tools 
+					that comply with YouTube's current policies.
+				</p>
 			</footer>
 		</div>
 	);
