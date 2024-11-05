@@ -254,7 +254,7 @@ export default function Home() {
 					⚠️ Update 5/11/2024: This project is deprecated due to YouTube banning ISP IPs. 
 					As a result, the functionality of this application to fetch and summarize YouTube videos 
 					is no longer viable. Users are encouraged to explore alternative solutions or tools 
-					that comply with YouTube's current policies.
+					that comply with YouTube&apos; current policies.
 				</p>
 			</footer>
 		</div>
